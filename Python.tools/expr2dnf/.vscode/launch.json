@@ -1,0 +1,52 @@
+{
+    "configurations": [
+        {   //sample_input01.expression
+            "name": "Python: args: -s input01",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            //"args": [ "-h" ],
+            "args": [ "-s", "sample_input01.expression" ],
+            "justMyCode": true
+        },
+        {   //"sample_input01.expression", "sample_output01.expression"
+            "name": "Python: args: input01 output01",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": [ "sample_input01.expression", "sample_output01.expression" ],
+            "justMyCode": true
+        },
+        {   //sample_input02-commented.expression
+            "name": "Python: args: input02",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": [ "sample_input02-commented.expression" ],
+            "justMyCode": true
+        },
+        {   //sample_input03-bad.expression
+            "name": "Python: args: input03",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": [ "sample_input03-bad.expression" ],
+            "justMyCode": true
+        },
+        {   //help
+            "name": "Python: args: -h",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": [ "-h" ],
+            "justMyCode": true
+        },
+        {   //no args
+            "name": "Python: no args",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "justMyCode": true
+        }
+    ]
+}
