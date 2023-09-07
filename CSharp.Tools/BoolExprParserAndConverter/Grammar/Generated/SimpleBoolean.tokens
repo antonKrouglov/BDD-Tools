@@ -1,0 +1,17 @@
+ITE=1
+COMMA=2
+AND=3
+OR=4
+NOT=5
+TRUE=6
+FALSE=7
+LPAREN=8
+RPAREN=9
+IDENTIFIER=10
+WS=11
+','=2
+'&'=3
+'|'=4
+'!'=5
+'('=8
+')'=9

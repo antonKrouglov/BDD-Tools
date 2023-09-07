@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Grammar\Generated\iteForBdd.interp" />
+    <None Remove="Grammar\Generated\iteForBdd.tokens" />
+    <None Remove="Grammar\Generated\iteForBddLexer.interp" />
+    <None Remove="Grammar\Generated\iteForBddLexer.tokens" />
+    <None Remove="Grammar\Generated\SimpleBoolean.interp" />
+    <None Remove="Grammar\Generated\SimpleBoolean.tokens" />
+    <None Remove="Grammar\Generated\SimpleBooleanLexer.interp" />
+    <None Remove="Grammar\Generated\SimpleBooleanLexer.tokens" />
+    <None Remove="Grammar\iteForBdd.g4" />
+    <None Remove="Grammar\SimpleBoolean.g4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Include="Grammar\iteForBdd.g4">
+	    <Listener>true</Listener>
+	    <Visitor>true</Visitor>
+	    <GAtn>false</GAtn>
+	    <Package>Parser.Ite</Package>
+	    <Error>true</Error>
+	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
+	    <AntOutDir>Grammar\Generated</AntOutDir>
+    </Antlr4>
+
+    <Antlr4 Include="Grammar\SimpleBoolean.g4">
+	    <Listener>true</Listener>
+	    <Visitor>true</Visitor>
+	    <GAtn>false</GAtn>
+	    <Package>Parser.Ite</Package>
+	    <Error>true</Error>
+	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
+	    <AntOutDir>Grammar\Generated</AntOutDir>
+    </Antlr4>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.0" />
+    <PackageReference Include="Antlr4BuildTasks" Version="12.2.0" />
+  </ItemGroup>
+
+</Project>
