@@ -28,7 +28,7 @@
 	    <Package>Parser.Ite</Package>
 	    <Error>true</Error>
 	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
-	    <AntOutDir>Grammar\Generated</AntOutDir>
+	    <AntOutDir>Grammar/Generated</AntOutDir>
     </Antlr4>
 
     <Antlr4 Include="Grammar\SimpleBoolean.g4">
@@ -38,7 +38,7 @@
 	    <Package>Parser.Ite</Package>
 	    <Error>true</Error>
 	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
-	    <AntOutDir>Grammar\Generated</AntOutDir>
+	    <AntOutDir>Grammar/Generated</AntOutDir>
     </Antlr4>
   </ItemGroup>
 
