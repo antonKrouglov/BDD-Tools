@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:\Projects\BDD\BDD-Tools\CSharp.Tools\BoolExprParserAndConverter\Grammar\iteForBdd.g4 by ANTLR 4.13.0
+// Generated from D:\Projects\BDD\BDD-Tools.scratch\CS\BoolExprParserAndConverter\Grammar\iteForBdd.g4 by ANTLR 4.13.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Parser.Ite {
+namespace BddTools.Grammar.Generated {
 using System;
 using System.IO;
 using System.Text;
@@ -191,7 +191,7 @@ public partial class iteForBddParser : Parser {
 	}
 	public partial class IteExprContext : ExpressionContext {
 		public IToken op;
-		public IToken ifcond;
+		public ExpressionContext ifcond;
 		public ExpressionContext thenexpr;
 		public ExpressionContext elseexpr;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(iteForBddParser.LPAREN, 0); }
@@ -201,7 +201,6 @@ public partial class iteForBddParser : Parser {
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(iteForBddParser.RPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ITE() { return GetToken(iteForBddParser.ITE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER() { return GetToken(iteForBddParser.IDENTIFIER, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
 		}
@@ -244,7 +243,7 @@ public partial class iteForBddParser : Parser {
 				State = 10;
 				Match(LPAREN);
 				State = 11;
-				((IteExprContext)_localctx).ifcond = Match(IDENTIFIER);
+				((IteExprContext)_localctx).ifcond = expression();
 				State = 12;
 				Match(COMMA);
 				State = 13;
@@ -349,7 +348,7 @@ public partial class iteForBddParser : Parser {
 		4,1,8,25,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,
 		1,1,1,1,1,1,1,1,1,3,1,21,8,1,1,2,1,2,1,2,0,0,3,0,2,4,0,1,1,0,3,4,23,0,
 		6,1,0,0,0,2,20,1,0,0,0,4,22,1,0,0,0,6,7,3,2,1,0,7,8,5,0,0,1,8,1,1,0,0,
-		0,9,10,5,1,0,0,10,11,5,5,0,0,11,12,5,7,0,0,12,13,5,2,0,0,13,14,3,2,1,0,
+		0,9,10,5,1,0,0,10,11,5,5,0,0,11,12,3,2,1,0,12,13,5,2,0,0,13,14,3,2,1,0,
 		14,15,5,2,0,0,15,16,3,2,1,0,16,17,5,6,0,0,17,21,1,0,0,0,18,21,3,4,2,0,
 		19,21,5,7,0,0,20,9,1,0,0,0,20,18,1,0,0,0,20,19,1,0,0,0,21,3,1,0,0,0,22,
 		23,7,0,0,0,23,5,1,0,0,0,1,20
@@ -360,4 +359,4 @@ public partial class iteForBddParser : Parser {
 
 
 }
-} // namespace Parser.Ite
+} // namespace BddTools.Grammar.Generated

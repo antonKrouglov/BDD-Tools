@@ -1,7 +1,12 @@
-/* simple boolean grammar handling (x | y) & !z ITE (if, then, else) is supported as well boolean
- literals as True, False (case insensitive) Ite is also case insensitive Adapted from
- https://stackoverflow.com/a/30987142/2746150
- */
+/*
+Simple boolean grammar handling (x | y) & !z
+ITE (if, then, else) is supported as well.
+Boolean literals are True, False.
+Literals and function names are NOT case sensitive.
+AND, OR binary operators have EQUAL priority.
+Adapted from https://stackoverflow.com/a/30987142/2746150.
+*/
+
 grammar SimpleBoolean;
 options {
 	language = 'CSharp';
@@ -10,10 +15,12 @@ options {
 parse: expression EOF;
 
 expression:
-	op = ITE LPAREN ifcond = expression COMMA thenexpr = expression COMMA elseexpr = expression
-		RPAREN												# iteExpr
-	| LPAREN expression RPAREN								# parenExpr
-	| NOT expression										# notExpr
+	op = ITE LPAREN ifcond = expression 
+				COMMA thenexpr = expression
+				COMMA elseexpr = expression
+			 RPAREN											# iteExpr
+	| LPAREN exprInsideParenthesis = expression RPAREN		# parenExpr
+	| NOT exprInsideNot = expression						# notExpr
 	| left = expression op = binaryOp right = expression	# binaryExpr
 	| boolLiteral											# boolLiteralExpr
 	| IDENTIFIER											# variableExpr;

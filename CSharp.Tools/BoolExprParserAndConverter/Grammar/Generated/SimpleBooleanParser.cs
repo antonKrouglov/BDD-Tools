@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:\Projects\BDD\BDD-Tools\CSharp.Tools\BoolExprParserAndConverter\Grammar\SimpleBoolean.g4 by ANTLR 4.13.0
+// Generated from D:\Projects\BDD\BDD-Tools.scratch\CS\BoolExprParserAndConverter\Grammar\SimpleBoolean.g4 by ANTLR 4.13.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Parser.Ite {
+namespace BddTools.Grammar.Generated {
 using System;
 using System.IO;
 using System.Text;
@@ -169,6 +169,7 @@ public partial class SimpleBooleanParser : Parser {
 		}
 	}
 	public partial class NotExprContext : ExpressionContext {
+		public ExpressionContext exprInsideNot;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOT() { return GetToken(SimpleBooleanParser.NOT, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
@@ -245,11 +246,12 @@ public partial class SimpleBooleanParser : Parser {
 		}
 	}
 	public partial class ParenExprContext : ExpressionContext {
+		public ExpressionContext exprInsideParenthesis;
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(SimpleBooleanParser.LPAREN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(SimpleBooleanParser.RPAREN, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(SimpleBooleanParser.RPAREN, 0); }
 		public ParenExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -356,7 +358,7 @@ public partial class SimpleBooleanParser : Parser {
 				State = 21;
 				Match(LPAREN);
 				State = 22;
-				expression(0);
+				((ParenExprContext)_localctx).exprInsideParenthesis = expression(0);
 				State = 23;
 				Match(RPAREN);
 				}
@@ -369,7 +371,7 @@ public partial class SimpleBooleanParser : Parser {
 				State = 25;
 				Match(NOT);
 				State = 26;
-				expression(4);
+				((NotExprContext)_localctx).exprInsideNot = expression(4);
 				}
 				break;
 			case TRUE:
@@ -580,4 +582,4 @@ public partial class SimpleBooleanParser : Parser {
 
 
 }
-} // namespace Parser.Ite
+} // namespace BddTools.Grammar.Generated

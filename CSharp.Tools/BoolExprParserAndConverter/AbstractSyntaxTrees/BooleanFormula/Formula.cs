@@ -1,24 +1,28 @@
-﻿namespace BddTools {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+using DecisionDiagrams;
+using System;
+using System.Collections.Generic;
 
-    /// <summary>
-    /// Formula representation for binary decision diagrams.
-    /// Taken from https://github.com/microsoft/DecisionDiagrams/blob/master/DecisionDiagrams.Tests/Formula.cs
-    /// Just one method was commented
-    /// </summary>
+namespace BddTools.AbstractSyntaxTrees {
+
+    /// <summary> Abstract Syntax Tree representation for Boolean expressions.
+    /// Taken as is from https://github.com/microsoft/DecisionDiagrams/blob/master/DecisionDiagrams.Tests/Formula.cs </summary>
     [ExcludeFromCodeCoverage]
     public partial class Formula {
-
-        /// <summary> The formula type. </summary>
+        /// <summary>
+        /// The formula type.
+        /// </summary>
         public AstType Type { get; }
 
-        /// <summary> Data for the formula. </summary>
+        /// <summary>
+        /// Data for the formula.
+        /// </summary>
         public object Data { get; }
 
-        /// <summary> The formula children. </summary>
+        /// <summary>
+        /// The formula children.
+        /// </summary>
         public Formula[] Children { get; }
 
         /// <summary>
@@ -202,7 +206,7 @@
                     throw new Exception("impossible");
             }
         }
-/*
+
         /// <summary>
         /// Evaluate a formula using BDDs.
         /// </summary>
@@ -210,10 +214,8 @@
         /// <param name="variables">The variables.</param>
         /// <param name="f">The formula.</param>
         /// <returns></returns>
-        public DD Evaluate<T>(DDManager<T> manager, VarBool<T>[] variables, Formula f) where T : IDDNode, IEquatable<T>
-        {
-            switch (f.Type)
-            {
+        public DD Evaluate<T>(DDManager<T> manager, VarBool<T>[] variables, Formula f) where T : IDDNode, IEquatable<T> {
+            switch (f.Type) {
                 case AstType.TRUE:
                     return manager.True();
                 case AstType.FALSE:
@@ -260,7 +262,6 @@
                     throw new Exception("Unreachable");
             }
         }
-*/
 
         /// <summary>
         /// Evaluate a formula using a concrete assignment.
@@ -323,10 +324,6 @@
             }
             else {
                 var args = string.Join(", ", arguments);
-                if (this.Type == AstType.VAR && this.Data is string) {
-                    //if variables are named - just print their names instead of VAR(a)
-                    return $"{args}";
-                }
                 return $"{this.Type}({args})";
             }
         }
@@ -500,5 +497,6 @@
 
         ,
     }
+
 
 }

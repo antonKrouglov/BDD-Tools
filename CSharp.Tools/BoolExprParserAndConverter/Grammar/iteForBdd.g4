@@ -1,7 +1,9 @@
-/* simple ITE (if, then, else) representaion of Boolean Decison Diagrams boolean literals as True,
- False (case insensitive) Ite is also case insensitive Adapted from
- https://stackoverflow.com/a/30987142/2746150
- */
+/* 
+Simple ITE(if, then, else) representation of Boolean Decision Diagrams.
+Boolean literals are True, False.
+Literals and function names are NOT case sensitive.
+Adapted from https://stackoverflow.com/a/30987142/2746150.
+*/
 grammar iteForBdd;
 options {
 	language = 'CSharp';
@@ -10,8 +12,10 @@ options {
 parse: expression EOF;
 
 expression:
-	op = ITE LPAREN ifcond = IDENTIFIER COMMA thenexpr = expression COMMA elseexpr = expression
-		RPAREN		# iteExpr
+	op = ITE LPAREN ifcond = expression 
+				COMMA thenexpr = expression
+				COMMA elseexpr = expression
+			 RPAREN	# iteExpr
 	| boolLiteral	# boolLiteralExpr
 	| IDENTIFIER	# variableExpr;
 

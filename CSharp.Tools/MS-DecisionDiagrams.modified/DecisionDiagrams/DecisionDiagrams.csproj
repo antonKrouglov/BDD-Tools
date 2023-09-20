@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <Platforms>AnyCPU;x64</Platforms>
+    <RootNamespace>DecisionDiagrams</RootNamespace>
+    <HighEntropyVA>true</HighEntropyVA>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Company>Microsoft</Company>
+    <Authors></Authors>
+    <Description>This library implements various variants of binary decision diagrams. It focuses on high performance, usability, and correctness.</Description>
+    <PackageProjectUrl>https://github.com/microsoft/DecisionDiagrams</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageTags>binary decision diagrams diagram bdd bdds contraint solving verification</PackageTags>
+    <PackageId>DecisionDiagrams</PackageId>
+    <Version>1.3.0</Version>
+    <RepositoryUrl>https://github.com/microsoft/DecisionDiagrams</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants></DefineConstants>
+    <DocumentationFile></DocumentationFile>
+    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|x64'">
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|x64'">
+    <CodeAnalysisRuleSet />
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <Import Project="..\.stylecop\StyleCop.props" />
+</Project>

@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="BddTools.csproj.DotSettings" />
     <None Remove="Grammar\Generated\iteForBdd.interp" />
     <None Remove="Grammar\Generated\iteForBdd.tokens" />
     <None Remove="Grammar\Generated\iteForBddLexer.interp" />
@@ -25,7 +27,7 @@
 	    <Listener>true</Listener>
 	    <Visitor>true</Visitor>
 	    <GAtn>false</GAtn>
-	    <Package>Parser.Ite</Package>
+	    <Package>BddTools.Grammar.Generated</Package>
 	    <Error>true</Error>
 	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
 	    <AntOutDir>Grammar/Generated</AntOutDir>
@@ -35,7 +37,7 @@
 	    <Listener>true</Listener>
 	    <Visitor>true</Visitor>
 	    <GAtn>false</GAtn>
-	    <Package>Parser.Ite</Package>
+	    <Package>BddTools.Grammar.Generated</Package>
 	    <Error>true</Error>
 	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
 	    <AntOutDir>Grammar/Generated</AntOutDir>
@@ -44,7 +46,26 @@
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.0" />
-    <PackageReference Include="Antlr4BuildTasks" Version="12.2.0" />
+    <PackageReference Include="Antlr4BuildTasks" Version="12.2.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="JetBrains.Annotations" Version="2023.2.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MS-DecisionDiagrams.modified\DecisionDiagrams\DecisionDiagrams.csproj" />
   </ItemGroup>
 
 </Project>

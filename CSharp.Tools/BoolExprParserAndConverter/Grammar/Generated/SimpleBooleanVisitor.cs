@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:\Projects\BDD\BDD-Tools\CSharp.Tools\BoolExprParserAndConverter\Grammar\SimpleBoolean.g4 by ANTLR 4.13.0
+// Generated from D:\Projects\BDD\BDD-Tools.scratch\CS\BoolExprParserAndConverter\Grammar\SimpleBoolean.g4 by ANTLR 4.13.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Parser.Ite {
+namespace BddTools.Grammar.Generated {
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
@@ -93,4 +93,4 @@ public interface ISimpleBooleanVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBoolLiteral([NotNull] SimpleBooleanParser.BoolLiteralContext context);
 }
-} // namespace Parser.Ite
+} // namespace BddTools.Grammar.Generated

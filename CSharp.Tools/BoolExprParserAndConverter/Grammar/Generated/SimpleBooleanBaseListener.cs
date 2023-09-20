@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from D:\Projects\BDD\BDD-Tools\CSharp.Tools\BoolExprParserAndConverter\Grammar\SimpleBoolean.g4 by ANTLR 4.13.0
+// Generated from D:\Projects\BDD\BDD-Tools.scratch\CS\BoolExprParserAndConverter\Grammar\SimpleBoolean.g4 by ANTLR 4.13.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Parser.Ite {
+namespace BddTools.Grammar.Generated {
 
 using Antlr4.Runtime.Misc;
 using IErrorNode = Antlr4.Runtime.Tree.IErrorNode;
@@ -170,4 +170,4 @@ public partial class SimpleBooleanBaseListener : ISimpleBooleanListener {
 	/// <remarks>The default implementation does nothing.</remarks>
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
-} // namespace Parser.Ite
+} // namespace BddTools.Grammar.Generated
