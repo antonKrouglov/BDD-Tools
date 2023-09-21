@@ -31,7 +31,7 @@ namespace BddTools.Util {
         /// <returns>true if any duplicates found</returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <remarks> https://stackoverflow.com/a/27233955/2746150 </remarks>>
-        public static bool HaveDuplicates<TItem, TKey>(this IEnumerable<TItem> list, Func<TItem, TKey> keySelector)
+        public static bool HasDuplicates<TItem, TKey>(this IEnumerable<TItem> list, Func<TItem, TKey> keySelector)
             => (list ?? throw new ArgumentNullException(nameof(list)))
                 .GroupBy(keySelector ?? throw new ArgumentNullException(nameof(keySelector)))
                 .Any(g => g.Count() > 1);
@@ -44,7 +44,7 @@ namespace BddTools.Util {
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <remarks> https://stackoverflow.com/a/27233955/2746150 </remarks>>
-        public static bool HaveDuplicates<T>(this IEnumerable<T> list, IEqualityComparer<T>? comparer = null)
+        public static bool HasDuplicates<T>(this IEnumerable<T> list, IEqualityComparer<T>? comparer = null)
             => (list ?? throw new ArgumentNullException(nameof(list)))
                 .GroupBy(x => x, comparer ?? EqualityComparer<T>.Default)
                 .Any(g => g.Count() > 1);
@@ -76,7 +76,7 @@ namespace BddTools.Util {
         /// see https://stackoverflow.com/a/10630026/2746150 </remarks>>
         public static IEnumerable<IEnumerable<T>> GetPermutationsSafe<T>(this IList<T> list) {
             if (list == null) throw new ArgumentNullException(nameof(list));
-            if (list.HaveDuplicates()) throw new ArgumentException($"duplicates found in {nameof(list)}");
+            if (list.HasDuplicates()) throw new ArgumentException($"duplicates found in {nameof(list)}");
             return GetPermutationsSafe(list, list.Count);
         }
 
@@ -98,6 +98,7 @@ namespace BddTools.Util {
             if (values == null) throw new ArgumentNullException(nameof(values));
             return privGetPermutationsFast(values, 0);
         }
+
 
         /// <summary> inner permutation method </summary>
         private static IEnumerable<T[]> privGetPermutationsFast<T>(T[] values, int fromInd) {
@@ -122,6 +123,7 @@ namespace BddTools.Util {
                 }
             }
         }
+
 
         //public static IEnumerable<T[]> Permutations<T>(T[] values, int fromInd = 0) {
         //    if (fromInd + 1 == values.Length)
@@ -151,13 +153,29 @@ namespace BddTools.Util {
         public static T[] CloneArray<T>(this T[] arr)
             => (T[])arr.Clone();
 
-        public static T[] Reorder<T>(this T[] arr, int[] newOrder) {
+
+        /// <summary>
+        /// Reorder array; Samples:
+        ///     {'a', 'b'} {0, 1} produces {'a', 'b'}
+        ///     {'a', 'b'} {1, 0} produces {'b', 'a'}
+        ///     {'x', 'y', 'z'} {2, 0, 1} produces {'z', 'x', 'y'}
+        ///     {10, 11, 12} {2, 1, 0} produces {12, 11, 10}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arr"></param>
+        /// <param name="newOrder"></param>
+        /// <returns>new reordered array</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static T[] ReorderArray<T>(this T[] arr, IList<int> newOrder) {
             if (arr == null) throw new ArgumentNullException(nameof(arr));
             if (newOrder == null) throw new ArgumentNullException(nameof(newOrder));
-            if (arr.Count() != newOrder.Count()) throw new ArgumentException($"Unmatched counts {arr.Count()} {newOrder.Count()}");
+            if (newOrder.HasDuplicates()) throw new ArgumentException(nameof(newOrder));
+            if (arr.Count() != newOrder.Count())
+                throw new ArgumentException($"Unmatched counts {arr.Count()} {newOrder.Count()}");
 
-            var reordered = arr.Zip(newOrder, 
-                (elem, replacementIndex) 
+            var reordered = arr.Zip(newOrder,
+                (elem, replacementIndex)
                     => arr[replacementIndex]).ToArray();
 
             return reordered;
@@ -223,6 +241,14 @@ namespace BddTools.Util {
                 .OfType<bool>()
                 .Select((elem, index) => new KeyValuePair<int, bool>(index, elem))
                 .ToImmutableDictionary();
+
+        #endregion
+
+
+        #region Math
+
+        public static ulong Factorial(this ulong src)
+            => src <= 1 ? 1 : src * Factorial(src - 1);
 
         #endregion
 

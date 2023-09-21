@@ -34,12 +34,14 @@ namespace BddTools.UI
             splitMain = new SplitContainer();
             splitLeft = new SplitContainer();
             txtSrc = new RichTextBox();
+            cmdMinimizeAndReorder = new Button();
             cmdMinimizeWithGiven = new Button();
             cmdReadVerify = new Button();
             splitRight = new SplitContainer();
+            splitMiddle = new SplitContainer();
             lstVars = new ListBox();
+            txtStatus = new RichTextBox();
             txtResult = new RichTextBox();
-            cmdMinimizeAndReorder = new Button();
             ((System.ComponentModel.ISupportInitialize)splitMain).BeginInit();
             splitMain.Panel1.SuspendLayout();
             splitMain.Panel2.SuspendLayout();
@@ -52,6 +54,10 @@ namespace BddTools.UI
             splitRight.Panel1.SuspendLayout();
             splitRight.Panel2.SuspendLayout();
             splitRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitMiddle).BeginInit();
+            splitMiddle.Panel1.SuspendLayout();
+            splitMiddle.Panel2.SuspendLayout();
+            splitMiddle.SuspendLayout();
             SuspendLayout();
             // 
             // splitMain
@@ -93,7 +99,7 @@ namespace BddTools.UI
             splitLeft.Panel2.Controls.Add(cmdMinimizeWithGiven);
             splitLeft.Panel2.Controls.Add(cmdReadVerify);
             splitLeft.Size = new Size(303, 600);
-            splitLeft.SplitterDistance = 434;
+            splitLeft.SplitterDistance = 351;
             splitLeft.SplitterWidth = 5;
             splitLeft.TabIndex = 0;
             // 
@@ -103,10 +109,22 @@ namespace BddTools.UI
             txtSrc.Location = new Point(0, 0);
             txtSrc.Margin = new Padding(3, 4, 3, 4);
             txtSrc.Name = "txtSrc";
-            txtSrc.Size = new Size(299, 430);
+            txtSrc.Size = new Size(299, 347);
             txtSrc.TabIndex = 0;
             txtSrc.Text = "";
             txtSrc.WordWrap = false;
+            // 
+            // cmdMinimizeAndReorder
+            // 
+            cmdMinimizeAndReorder.Dock = DockStyle.Top;
+            cmdMinimizeAndReorder.Location = new Point(0, 86);
+            cmdMinimizeAndReorder.Margin = new Padding(3, 4, 3, 4);
+            cmdMinimizeAndReorder.Name = "cmdMinimizeAndReorder";
+            cmdMinimizeAndReorder.Size = new Size(299, 43);
+            cmdMinimizeAndReorder.TabIndex = 2;
+            cmdMinimizeAndReorder.Text = "Minimize and reorder";
+            cmdMinimizeAndReorder.UseVisualStyleBackColor = true;
+            cmdMinimizeAndReorder.Click += cmdMinimizeAndReorder_Click;
             // 
             // cmdMinimizeWithGiven
             // 
@@ -142,7 +160,7 @@ namespace BddTools.UI
             // 
             // splitRight.Panel1
             // 
-            splitRight.Panel1.Controls.Add(lstVars);
+            splitRight.Panel1.Controls.Add(splitMiddle);
             // 
             // splitRight.Panel2
             // 
@@ -152,20 +170,52 @@ namespace BddTools.UI
             splitRight.SplitterWidth = 5;
             splitRight.TabIndex = 0;
             // 
+            // splitMiddle
+            // 
+            splitMiddle.BorderStyle = BorderStyle.Fixed3D;
+            splitMiddle.Dock = DockStyle.Fill;
+            splitMiddle.Location = new Point(0, 0);
+            splitMiddle.Margin = new Padding(3, 4, 3, 4);
+            splitMiddle.Name = "splitMiddle";
+            splitMiddle.Orientation = Orientation.Horizontal;
+            // 
+            // splitMiddle.Panel1
+            // 
+            splitMiddle.Panel1.Controls.Add(lstVars);
+            // 
+            // splitMiddle.Panel2
+            // 
+            splitMiddle.Panel2.Controls.Add(txtStatus);
+            splitMiddle.Size = new Size(201, 600);
+            splitMiddle.SplitterDistance = 349;
+            splitMiddle.SplitterWidth = 5;
+            splitMiddle.TabIndex = 1;
+            // 
             // lstVars
             // 
             lstVars.Dock = DockStyle.Fill;
             lstVars.FormattingEnabled = true;
+            lstVars.IntegralHeight = false;
             lstVars.ItemHeight = 20;
             lstVars.Items.AddRange(new object[] { "a", "b", "c", "d" });
             lstVars.Location = new Point(0, 0);
             lstVars.Margin = new Padding(3, 4, 3, 4);
             lstVars.Name = "lstVars";
-            lstVars.Size = new Size(197, 596);
-            lstVars.TabIndex = 0;
-            lstVars.DragDrop += lstVars_DragDrop;
-            lstVars.DragOver += lstVars_DragOver;
-            lstVars.MouseDown += lstVars_MouseDown;
+            lstVars.Size = new Size(197, 345);
+            lstVars.TabIndex = 1;
+            // 
+            // txtStatus
+            // 
+            txtStatus.Dock = DockStyle.Fill;
+            txtStatus.Location = new Point(0, 0);
+            txtStatus.Margin = new Padding(3, 4, 3, 4);
+            txtStatus.Name = "txtStatus";
+            txtStatus.ReadOnly = true;
+            txtStatus.ScrollBars = RichTextBoxScrollBars.None;
+            txtStatus.Size = new Size(197, 242);
+            txtStatus.TabIndex = 2;
+            txtStatus.Text = "";
+            txtStatus.WordWrap = false;
             // 
             // txtResult
             // 
@@ -177,18 +227,6 @@ namespace BddTools.UI
             txtResult.TabIndex = 1;
             txtResult.Text = "";
             txtResult.WordWrap = false;
-            // 
-            // cmdMinimizeAndReorder
-            // 
-            cmdMinimizeAndReorder.Dock = DockStyle.Top;
-            cmdMinimizeAndReorder.Location = new Point(0, 86);
-            cmdMinimizeAndReorder.Margin = new Padding(3, 4, 3, 4);
-            cmdMinimizeAndReorder.Name = "cmdMinimizeAndReorder";
-            cmdMinimizeAndReorder.Size = new Size(299, 43);
-            cmdMinimizeAndReorder.TabIndex = 2;
-            cmdMinimizeAndReorder.Text = "Minimize and reorder";
-            cmdMinimizeAndReorder.UseVisualStyleBackColor = true;
-            cmdMinimizeAndReorder.Click += cmdMinimizeAndReorder_Click;
             // 
             // frmMain
             // 
@@ -212,6 +250,10 @@ namespace BddTools.UI
             splitRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitRight).EndInit();
             splitRight.ResumeLayout(false);
+            splitMiddle.Panel1.ResumeLayout(false);
+            splitMiddle.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitMiddle).EndInit();
+            splitMiddle.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -221,10 +263,12 @@ namespace BddTools.UI
         private SplitContainer splitLeft;
         private RichTextBox txtSrc;
         private SplitContainer splitRight;
-        private ListBox lstVars;
         private Button cmdReadVerify;
         private RichTextBox txtResult;
         private Button cmdMinimizeWithGiven;
         private Button cmdMinimizeAndReorder;
+        private SplitContainer splitMiddle;
+        private ListBox lstVars;
+        private RichTextBox txtStatus;
     }
 }

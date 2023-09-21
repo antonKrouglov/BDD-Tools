@@ -1,15 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Intrinsics.Arm;
+using System.Threading.Tasks;
+using BddTools.BddReorder;
+using BddTools.Parser;
 using BddTools.Util;
 using BddTools.Variables;
 using DecisionDiagrams;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static BddTools.AbstractSyntaxTrees.Formula;
 using BddPath = System.Collections.Generic.List<BddTools.AbstractSyntaxTrees.BddMappedFormulaNode>;
 using BddPathsList = System.Collections.Generic.List<System.Collections.Generic.List<BddTools.AbstractSyntaxTrees.BddMappedFormulaNode>>;
 
 namespace BddTools.AbstractSyntaxTrees {
+
     /// <summary>
     /// Formula limited to Binary Decision Diagram representation
     ///     BddFormula ::= ITE(condition_expression, then_expression, else_expression ) | boolLiteral | variableName
@@ -23,7 +30,6 @@ namespace BddTools.AbstractSyntaxTrees {
         public ImmutableVarsBag Variables { get; private set; } = null;
 
         public Formula FormulaInner { get; }
-
 
         private BddMappedFormula(Formula formulaInner, ImmutableVarsBag variables) {
             FormulaInner = formulaInner;
@@ -121,70 +127,77 @@ namespace BddTools.AbstractSyntaxTrees {
         public int BddNodesCount()
             => FormulaInner.DescendantsAndSelf.Count(f => f.IsIte);
 
+        public BddMappedFormula MinimizeWithGivenOrder()
+            => FormulaInner.MinimizeWithGivenOrder(Variables.IdxToNameIDict);
+
 
         /// <summary> Reorder variables in BDD to achieve minimal complexity (nodes count) </summary>
         /// <returns> 1st found minimal BDD-mapped Formula </returns>
         /// <remarks> performance is low as we are just iterating over all possible variable orders </remarks>
         public BddMappedFormula Reorder() {
-            var initialSortInfo = //Variables.SortedList.Select((varName, sortIndex) => (varName:varName, sortIndex:sortIndex)).OrderBy(vi=>vi.sortIndex).ToList();
+            //prepare lists
+            var initialSortInfo =
                 Variables
                     .List
                     .OrderBy(vi => vi.Index)
                     .ToList();
-
-            var initialSortDict =
-                initialSortInfo
-                    .Select(vi => new KeyValuePair<int, string>(vi.Index, vi.Name))
-                    .ToImmutableDictionary();
             var initialSortIndexes =
                 initialSortInfo
                     .Select(vi => vi.Index)
                     .ToArray();
+            var varCount = initialSortIndexes.Count();
 
-            var sortIndexesTmp = initialSortIndexes.CloneArray(); //we need a clone as GetPermutationsFast changes array order
-            var orderPermutations = sortIndexesTmp
-                .GetPermutationsFast()
-                .Select((pm, pmIndex) => (pm: pm, pmIndex: pmIndex));
-
-            var f = FormulaInner;
-
-            var numVars = initialSortIndexes.Count();
-            var expectedArray = Enumerable.Range(0, numVars).ToArray();
+            //verify collections
+            var expectedArray = Enumerable.Range(0, varCount).ToArray();
             CollectionAssert.AreEqual(expectedArray, initialSortIndexes);
 
-            var minComplexityPermIndeхes = new List<int>();
-            var currentComplexity = this.BddNodesCount()+2;
-            var minComplexity = currentComplexity;
+            //prepare permutations
+            var sortIndexes = initialSortIndexes.CloneArray(); //we need a clone as GetPermutationsFast changes array order
+            var orderPermutations = sortIndexes
+                .GetPermutationsFast()
+                //.GetPermutationsSafe()
+                .Select((pm, pmIndex) => (pm: (IEnumerable<int>)pm, pmIndex: pmIndex));
+
+            //check counts - SLOWWW
+            //var permutationsCount = (ulong)sortIndexes.CloneArray().GetPermutationsFast().LongCount();
+            //Assert.AreEqual(permutationsCount, ((ulong)varCount).Factorial());
+
+            IReorderer reorderer;
+            reorderer = new
+                //ReordererBruteForce
+                //ReordererParallel
+                ReordererParallelEx
+                    (new ReorderParams(bddFormula: this, orderPermutations, varCount), new ReorderResult());
+            reorderer.Process();
+
+            if (!reorderer.Result.AnyResultFound) //nothing to do
+                return this;
+
+            var selectedPermutation = initialSortIndexes
+                .CloneArray()
+                .GetPermutationsFast()
+                .Skip(reorderer.Result.MinComplexityPermIndeхes.First())
+                .First();
+            var permutedSortInfo = initialSortInfo
+                .Select(vi => new VarInfo(vi.Name, selectedPermutation[vi.Index], vi.Tag));
+
+            var newVarsOrder = new ImmutableVarsBag(permutedSortInfo).IdxToNameIDict;
+
+            return TransformToNewOrder(newVarsOrder);
+        }
 
 
-            foreach ((int[] pm, int pmIndex) in orderPermutations) {
-                var ddm = new DDManager<BDDNode>();
-                VarBool<BDDNode>[] ddmVarsInitial = initialSortIndexes.Select(i => ddm.CreateBool()).ToArray();
-                var ddmVars = ddmVarsInitial.Reorder(pm);
-                var dd = f.Evaluate(ddm, ddmVars, f);
+        public BddMappedFormula TransformToNewOrder(IReadOnlyDictionary<int, string> newVarsOrder) {
+            var newVarsText = string.Join(",", newVarsOrder.OrderBy(kv => kv.Key).Select(kv => kv.Value));
 
-                currentComplexity = ddm.NodeCount(dd);
-                if (currentComplexity > minComplexity) {
-                    continue;
-                }
+            ParserOfIteExpressions? parser;
 
-                if (currentComplexity == minComplexity) {
-                    minComplexityPermIndeхes.Add(pmIndex);
-                    continue;
-                }
-
-                //currentComplexity <= minComplexity
-                minComplexityPermIndeхes = pmIndex.Yield().ToList();
-                minComplexity = currentComplexity;
-            }
-
-            sortIndexesTmp = initialSortIndexes.CloneArray(); //we need a clone as GetPermutationsFast changes array order
-            var selectedPermutation = sortIndexesTmp.GetPermutationsFast().Skip(minComplexityPermIndeхes.First()).First();
-            var permutedSortInfo = initialSortInfo.Select(vi => new VarInfo(vi.Name, selectedPermutation[vi.Index], vi.Tag));
-
-            var txt = this.ToString();
-            var newFormula = Formula.parseIteWithGivenOrder(txt, new ImmutableVarsBag(permutedSortInfo).IdxToNameIDict);
-            return newFormula.BddMappedFormula;
+            var newFormula = (parser = parseIteWithGivenOrder(this.ToString(), newVarsOrder))?
+                             .BddMappedFormula
+                             ?? throw new Exception(
+                                 $"Internal error: parsing [{this.ToString()}] [{newVarsText}] failed [{parser?.SyntaxErrors?.First()}]");
+            //we need to minimize two times
+            return newFormula.MinimizeWithGivenOrder();
         }
     }
 }

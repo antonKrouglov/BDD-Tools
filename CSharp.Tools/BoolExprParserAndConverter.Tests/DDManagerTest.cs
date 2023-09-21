@@ -84,6 +84,32 @@ namespace BddTools.Tests {
             Assert.AreEqual(m1.Display(replaced), m2.Display(f2));
         }
 
+        /// <summary>
+        /// Test too many variables.
+        /// </summary>
+        [TestMethod]
+        public void TestTooManyVariablesOk() {
+            var manager = this.GetManager(6);
+
+            for (int i = 0; i < 32767; i++) {
+                manager.CreateBool();
+            }
+        }
+
+        /// <summary>
+        /// Test too many variables.
+        /// </summary>
+        [TestMethod]
+        public void TestTooManyVariables2() {
+            var manager = this.GetManager(6);
+
+            for (int i = 0; i < short.MaxValue; i++) {
+                manager.CreateBool();
+                if (i % 1000 != 0) continue;
+                GC.Collect();
+                manager.GarbageCollect();
+            }
+        }
 
     }
 }

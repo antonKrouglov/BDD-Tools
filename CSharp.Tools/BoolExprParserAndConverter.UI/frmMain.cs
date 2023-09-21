@@ -44,13 +44,36 @@ namespace BddTools.UI {
             lstVars.Items.Clear();
             lstVars.DataSource = variablesList;
             this.lstVars.AllowDrop = true;
+
+            lstVars.DragDrop += lstVars_DragDrop;
+            lstVars.DragOver += lstVars_DragOver;
+            lstVars.MouseDown += lstVars_MouseDown;
+
             txtResult.HideSelection = false; //auto-scroll on append
+            txtStatus.HideSelection = false; //auto-scroll on append
         }
 
         #endregion
 
 
         #region processing
+
+        private void ProcessCommand(Action<string> action, string actionParam, string? actionName = null) {
+            var statusText = actionName ?? "Command";
+            logStatus($"{statusText}...");
+            using (var b = new Benchmark($"{statusText} with {GetVariablesFromListbox().Count()} vars", logStatus)) {
+                Cursor.Current = Cursors.WaitCursor; // Set cursor as hourglass
+                try {
+                    action(actionParam);
+                }
+                catch (Exception e) {
+                    logError(e.ToString());
+                }
+                finally {
+                    Cursor.Current = Cursors.Default; // Set cursor as default arrow
+                }
+            }
+        }
 
         private void Verify(string booleanExpr) {
             //parse text
@@ -90,20 +113,18 @@ namespace BddTools.UI {
 
             //minimize with reordering
             var bestBddFormula = bddFormula.Reorder();
-            
-            //fill variables list
+
+            //fill variables list using new order
             SetVariablesToListbox(bestBddFormula.Variables.SortedList);
 
-            MinimizeWithGivenOrder(booleanExpr);
+            //print result
+            printBddFormula(bestBddFormula);
 
+            //disjunctive normal form of boolean expression
+            printDNF(bestBddFormula);
 
-            //printBddFormula(bestBddFormula);
-
-            ////disjunctive normal form of boolean expression
-            //printDNF(bestBddFormula);
-
-            ////truth table of formula
-            //printTruthTable(bestBddFormula.FormulaInner);
+            //truth table of formula
+            printTruthTable(bestBddFormula.FormulaInner);
         }
 
 
@@ -111,7 +132,7 @@ namespace BddTools.UI {
             parser = new ParserOfBooleanExpressions(booleanExpr);
             var parsedOk = parser.Parse(predefinedVars);
             if (parsedOk) return true;
-            logError(parser.SyntaxErrors.FirstOrDefault());
+            logSyntaxError(parser.SyntaxErrors.FirstOrDefault());
             return false;
         }
 
@@ -136,7 +157,6 @@ namespace BddTools.UI {
             var dnfExpr = minimalFormula.AsDnf(Bool_OR_OpSymbol: "\n | ");
             logText($"DNF:\n{dnfExpr}", dividerBefore: false);
         }
-        
 
         #endregion
 
@@ -190,17 +210,14 @@ namespace BddTools.UI {
 
         #endregion
 
-        private void cmdReadVerify_Click(object sender, EventArgs e) {
-            Verify(txtSrc.Text);
-        }
+        private void cmdReadVerify_Click(object sender, EventArgs e) 
+            => ProcessCommand(Verify, txtSrc.Text, nameof(Verify));
 
-        private void cmdMinimizeWithGiven_Click(object sender, EventArgs e) {
-            MinimizeWithGivenOrder(txtSrc.Text);
-        }
+        private void cmdMinimizeWithGiven_Click(object sender, EventArgs e) 
+            => ProcessCommand(MinimizeWithGivenOrder, txtSrc.Text, nameof(MinimizeWithGivenOrder));
 
-        private void cmdMinimizeAndReorder_Click(object sender, EventArgs e) {
-            MinimizeWithReordering(txtSrc.Text);
-        }
+        private void cmdMinimizeAndReorder_Click(object sender, EventArgs e) 
+            => ProcessCommand(MinimizeWithReordering, txtSrc.Text, nameof(MinimizeWithReordering));
 
         #endregion
 
@@ -212,7 +229,12 @@ namespace BddTools.UI {
             txtResult.AppendText($"{message}{(newLineAfter ? "\n" : "")}");
         }
 
-        private void logError(SyntaxError? message, bool newLineAfter = true, bool dividerBefore = true)
+        private void logStatus(string message) => txtStatus.AppendText($"{message}\n");
+
+        private void logError(string message, bool newLineAfter = true, bool dividerBefore = true)
+            => logText($"Error: {message}", newLineAfter, dividerBefore);
+
+        private void logSyntaxError(SyntaxError? message, bool newLineAfter = true, bool dividerBefore = true)
             => logText($"Error: {message}", newLineAfter, dividerBefore);
 
         private void logDivider() {
