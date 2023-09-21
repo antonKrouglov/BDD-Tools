@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Humanizer;
+//using Humanizer;
 
 namespace BddTools.Util {
     /// <summary> https://stackoverflow.com/a/37640207/2746150 </summary>
@@ -21,7 +21,7 @@ namespace BddTools.Util {
 
         public void Dispose() {
             timer.Stop();
-            logResultAction($" {timer.Elapsed.Humanize(4)} for {benchmarkName}\n");
+            logResultAction($" {timer.Elapsed/*.Humanize(4)*/} for {benchmarkName}\n");
         }
     }
 }

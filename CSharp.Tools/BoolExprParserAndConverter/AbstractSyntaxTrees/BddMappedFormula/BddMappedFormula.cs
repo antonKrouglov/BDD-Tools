@@ -124,8 +124,13 @@ namespace BddTools.AbstractSyntaxTrees {
 
         /// <summary> Amount of BDD tree nodes excluding TRUE and FALSE leafs </summary>
         /// <returns> BDD nodes count minus 2 </returns>
-        public int BddNodesCount()
+        public int NodesCount()
             => FormulaInner.DescendantsAndSelf.Count(f => f.IsIte);
+
+        /// <summary> Amount of BDD tree nodes including TRUE and FALSE leafs </summary>
+        /// <returns> BDD nodes count </returns>
+        public int BddNodesCount()
+            => NodesCount()+2;
 
         public BddMappedFormula MinimizeWithGivenOrder()
             => FormulaInner.MinimizeWithGivenOrder(Variables.IdxToNameIDict);

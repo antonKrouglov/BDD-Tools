@@ -142,7 +142,7 @@ namespace BddTools.UI {
                 minimalFormula.ToString(indentAndLineBreakIte: true)
                 , dividerBefore: dividerBefore);
             logText(
-                $"NODES: {minimalFormula.BddNodesCount()}"
+                $"NODES: {minimalFormula.NodesCount()}"
                 , dividerBefore: false);
         }
 

@@ -1,0 +1,24 @@
+    <None Remove="Grammar\iteForBdd.g4" />
+    <None Remove="Grammar\SimpleBoolean.g4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Include="Grammar\iteForBdd.g4">
+	    <Listener>true</Listener>
+	    <Visitor>true</Visitor>
+	    <GAtn>false</GAtn>
+	    <Package>BddTools.Grammar.Generated</Package>
+	    <Error>true</Error>
+	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
+	    <AntOutDir>Grammar/Generated</AntOutDir>
+    </Antlr4>
+
+    <Antlr4 Include="Grammar\SimpleBoolean.g4">
+	    <Listener>true</Listener>
+	    <Visitor>true</Visitor>
+	    <GAtn>false</GAtn>
+	    <Package>BddTools.Grammar.Generated</Package>
+	    <Error>true</Error>
+	    <JavaDownloadDirectory>USERPROFILE/.jre</JavaDownloadDirectory>
+	    <AntOutDir>Grammar/Generated</AntOutDir>
+    </Antlr4>

@@ -9,7 +9,8 @@ namespace BddTools.BddReorder {
         public IEnumerable<(IEnumerable<int> pm, int pmIndex)> orderPermutations;
         public IEnumerable<(int[] pm, int pmIndex)> orderPermutationsAlt;
         public BddMappedFormula bddFormula;
-        public Func<int, bool> indexSelector = null;
+        //public Func<int, bool> indexSelector = null;
+        public ThreadPartitioner partitioner;
 
         public ReorderParams() { }
 

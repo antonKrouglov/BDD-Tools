@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BddTools.Util;
 using DecisionDiagrams;
-using Microsoft.Build.Framework;
+//using Microsoft.Build.Framework;
 
 namespace BddTools.BddReorder {
     /// <summary> Multithreaded version of ReordererBruteForce using Chunk
